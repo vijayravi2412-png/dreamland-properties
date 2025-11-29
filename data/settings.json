@@ -1,0 +1,15 @@
+{
+  "site_title": "Dreamland Properties",
+
+  "hero_title": "Find your next investment or dream home",
+  "hero_subtitle": "Browse verified properties — plots, houses, apartments, commercial spaces and farms.",
+
+  "logo": "assets/logo.png",
+
+  "cat_houses": "assets/sample-house.jpg",
+  "cat_plots": "assets/sample-plot.jpg",
+  "cat_apartments": "assets/sample-apartment.jpg",
+  "cat_commercial": "assets/sample-commercial.jpg",
+  "cat_rentals": "assets/sample-rentals.jpg",
+  "cat_farms": "assets/sample-farm.jpg"
+}
