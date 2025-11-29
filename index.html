@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dreamland Properties</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<header class="nav-header">
+  <div class="nav-container">
+    <div class="logo">
+      <img src="assets/logo.png" alt="logo" />
+      <span class="site-title">Dreamland Properties</span>
+    </div>
+
+    <nav class="nav-menu">
+      <a href="index.html">Home</a>
+      <a href="houses.html">Houses</a>
+      <a href="plots.html">Plots</a>
+      <a href="apartments.html">Apartments</a>
+      <a href="commercial.html">Commercial</a>
+      <a href="rentals.html">Rentals</a>
+      <a href="farms.html">Farms</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+
+      <a href="admin/" class="admin-btn">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<div class="header-hero">
+  <div class="container">
+    <h1 class="hero-title">Find your next investment or dream home</h1>
+    <p class="hero-sub">
+      Browse verified properties — plots, houses, apartments, commercial spaces and farms.
+    </p>
+
+    <div class="search-box">
+      <input id="q" placeholder="Search by property name or ID" />
+      <button onclick="doSearch()">Search</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h2 class="section-title">Browse Categories</h2>
+  <div class="categories" id="cats"></div>
+
+  <h2 class="section-title">Latest Listings</h2>
+  <div id="listings" class="listings"></div>
+</div>
+
+<footer>
+  <div class="container">
+    <p class="footer-text">
+      Started in 2024 • Dreamland Properties • Udayalur, Kumbakonam
+    </p>
+  </div>
+</footer>
+
+<script>
+async function fetchJSON(path) {
+  try {
+    const r = await fetch(path);
+    return await r.json();
+  } catch {
+    return null;
+  }
+}
+
+async function init() {
+  const settings = await fetchJSON("data/settings.json");
+  document.querySelector(".hero-title").textContent =
+    settings.hero_title || "Find your next investment or dream home";
+
+  document.querySelector(".hero-sub").textContent =
+    settings.hero_subtitle || "";
+
+  if (settings.logo) {
+    document.querySelector(".logo img").src = settings.logo;
+  }
+
+  const cats = [
+    { title: "Houses", img: settings.cat_houses, file: "houses.html" },
+    { title: "Plots", img: settings.cat_plots, file: "plots.html" },
+    { title: "Apartments", img: settings.cat_apartments, file: "apartments.html" },
+    { title: "Commercial", img: settings.cat_commercial, file: "commercial.html" },
+    { title: "Rentals", img: settings.cat_rentals, file: "rentals.html" },
+    { title: "Farms", img: settings.cat_farms, file: "farms.html" }
+  ];
+
+  const catBox = document.getElementById("cats");
+  cats.forEach((c) => {
+    const div = document.createElement("a");
+    div.href = c.file;
+    div.className = "cat";
+    div.innerHTML = `
+      <img src="${c.img}" />
+      <div class="cat-title">${c.title}</div>
+    `;
+    catBox.appendChild(div);
+  });
+
+  const data = await fetchJSON("data/properties.json");
+  const list = document.getElementById("listings");
+
+  data.forEach((p) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${p.img}" />
+      <h3>${p.title}</h3>
+      <div class="muted">${p.category} • ${p.size}</div>
+      <div class="price-line">
+         <span class="price">${p.price}</span>
+         <a href="property-details.html?id=${encodeURIComponent(p.id)}" 
+            class="btn">View</a>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  window.ALL = data;
+}
+
+function doSearch() {
+  const q = document.getElementById("q").value.toLowerCase();
+  const out = window.ALL.filter(
+    (x) =>
+      x.title.toLowerCase().includes(q) ||
+      x.id.toLowerCase().includes(q)
+  );
+
+  const list = document.getElementById("listings");
+  list.innerHTML = "";
+
+  out.forEach((p) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${p.img}" />
+      <h3>${p.title}</h3>
+      <div class="muted">${p.category} • ${p.size}</div>
+      <div class="price-line">
+         <span class="price">${p.price}</span>
+         <a href="property-details.html?id=${encodeURIComponent(p.id)}" 
+            class="btn">View</a>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+init();
+</script>
+
+</body>
+</html>
