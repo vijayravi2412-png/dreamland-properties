@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Property Details - Dreamland</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<header class="nav-header">
+  <div class="nav-container">
+    <div class="logo">
+      <img src="assets/logo.png" alt="logo" />
+      <span class="site-title">Dreamland Properties</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div id="prop" class="card" style="padding:20px; margin-top:20px;"></div>
+</main>
+
+<script>
+async function loadProperty() {
+
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id");
+
+  const r = await fetch("data/properties.json");
+  const data = await r.json();
+
+  const p = data.find((x) => x.id === id) || null;
+
+  const el = document.getElementById("prop");
+
+  if (!p) {
+    el.innerHTML = "<h2>Property not found.</h2>";
+    return;
+  }
+
+  let videoBlock = "";
+  if (p.video && p.video.trim() !== "") {
+    const embed = p.video.replace("watch?v=", "embed/");
+    videoBlock = `
+      <div style="margin-top:16px;">
+        <iframe width="100%" height="320" src="${embed}" frameborder="0" allowfullscreen></iframe>
+      </div>
+    `;
+  }
+
+  el.innerHTML = `
+    <h1 style="color:var(--brand);">${p.title}</h1>
+
+    <img src="${p.img}" 
+         style="width:100%; height:360px; object-fit:cover; border-radius:10px; margin-top:12px;" />
+
+    <p style="margin-top:12px;">
+      <strong>Price:</strong> ${p.price}
+    </p>
+
+    <p><strong>Size:</strong> ${p.size}</p>
+
+    <p>${p.description}</p>
+
+    ${videoBlock}
+  `;
+}
+
+loadProperty();
+</script>
+
+</body>
+</html>
