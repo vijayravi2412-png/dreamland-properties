@@ -4,6 +4,8 @@ backend:
   branch: main
   auth_type: implicit
 
+local_backend: false
+
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
@@ -33,5 +35,5 @@ collections:
       - { label: "Size", name: "size", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Thumbnail Image", name: "thumbnail", widget: "image" }
-      - { label: "Gallery Images", name: "gallery", widget: "list", field: {label: Image, name: image, widget: image} }
+      - { label: "Gallery Images", name: "gallery", widget: "list", field: { label: "Image", name: "image", widget: "image" } }
       - { label: "Video Link", name: "video", widget: "string", required: false }
