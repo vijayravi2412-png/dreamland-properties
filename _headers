@@ -1,3 +1,0 @@
-/admin/*
-  Content-Security-Policy: frame-ancestors 'self';
-  X-Content-Type-Options: nosniff
