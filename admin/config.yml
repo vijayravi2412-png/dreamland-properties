@@ -2,6 +2,7 @@ backend:
   name: github
   repo: vijayravi2412-png/dreamland-properties
   branch: main
+  app_id: Ov23liqRSKa1EBR54woe
 
 media_folder: "assets/images"
 public_folder: "/assets/images"
